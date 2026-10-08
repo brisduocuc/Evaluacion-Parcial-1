@@ -1,30 +1,57 @@
 import taller_mecanico.Auto;
 import taller_mecanico.Furgon;
 import taller_mecanico.Garantizable;
+import taller_mecanico.GestorTaller;
 import taller_mecanico.Vehiculo;
+
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
 
         try {
+
+            GestorTaller gestor = new GestorTaller();
+
             Vehiculo auto1 = new Auto(
                     "Toyota", 2020, 15000, "Yaris", true
             );
 
-            Vehiculo furgon1 = new Furgon(
-                    "Mercedes-Benz", 2022, 40000, 2.0
+            Vehiculo auto2 = new Auto(
+                    "Hyundai", 2018, 80000, "Accent", false
             );
 
-            System.out.println("=== COSTOS DE SERVICIO ===");
+            Vehiculo furgon1 = new Furgon(
+                    "Toyota", 2022, 40000, 2.0
+            );
 
-            System.out.println(auto1);
-            System.out.println("Costo: $" + auto1.calcularCostoServicio());
+            Vehiculo furgon2 = new Furgon(
+                    "Peugeot", 2021, 35000, 1.2
+            );
 
-            System.out.println(furgon1);
-            System.out.println("Costo: $" + furgon1.calcularCostoServicio());
+            System.out.println("=== REGISTRO ===");
 
-            System.out.println("=== COSTOS CON DESCUENTO ===");
+            gestor.registrarVehiculo(auto1);
+            gestor.registrarVehiculo(auto2);
+            gestor.registrarVehiculo(furgon1);
+            gestor.registrarVehiculo(furgon2);
+
+            System.out.println();
+
+            gestor.mostrarVehiculos();
+
+            System.out.println("=== BÚSQUEDA POR MARCA ===");
+
+            List<Vehiculo> encontrados = gestor.buscarPorMarca("Toyota");
+
+            // Muestro las coincidencias de la búsqueda.
+            for (Vehiculo vehiculo : encontrados) {
+                System.out.println(vehiculo);
+            }
+
+            System.out.println();
+            System.out.println("=== DESCUENTOS ===");
 
             System.out.println("Auto con 10%: $"
                     + auto1.calcularCostoServicio(10));
@@ -32,11 +59,11 @@ public class Main {
             System.out.println("Furgón con 20%: $"
                     + furgon1.calcularCostoServicio(20));
 
-            System.out.println("=== GARANTÍA DEL TALLER ===");
+            System.out.println();
+            System.out.println("=== GARANTÍA ===");
 
             Garantizable garantiaAuto = (Garantizable) auto1;
 
-            // Compruebo el estado antes y después de activar la garantía.
             System.out.println("Garantía inicial: "
                     + garantiaAuto.tieneGarantiaActiva());
 
