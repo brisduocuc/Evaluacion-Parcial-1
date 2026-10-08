@@ -1,6 +1,7 @@
 package taller_mecanico;
 
-public class Vehiculo {
+public abstract class Vehiculo {
+
     private String marca;
     private int anioFabricacion;
     private double kilometraje;
@@ -42,10 +43,27 @@ public class Vehiculo {
     public void setKilometraje(double kilometraje) {
         if (kilometraje <= 0 || Double.isNaN(kilometraje)
                 || Double.isInfinite(kilometraje)) {
-            throw new IllegalArgumentException("Kilometraje debe ser mayor que cero y válido");
+            throw new IllegalArgumentException("Kilometraje inválido");
         } else {
             this.kilometraje = kilometraje;
         }
+    }
+
+    public abstract double calcularCostoServicio();
+
+    public double calcularCostoServicio(double porcentajeDescuento) {
+
+        if (Double.isNaN(porcentajeDescuento)
+                || porcentajeDescuento < 0
+                || porcentajeDescuento > 100) {
+            throw new IllegalArgumentException(
+                    "El descuento debe estar entre 0 y 100"
+            );
+        }
+
+        double costoNormal = calcularCostoServicio();
+
+        return costoNormal - (costoNormal * porcentajeDescuento / 100);
     }
 
     @Override
