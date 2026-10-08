@@ -6,13 +6,9 @@ public class Vehiculo {
     private double kilometraje;
 
     public Vehiculo(String marca, int anioFabricacion, double kilometraje) {
-//        this.marca = marca;
-//        this.anioFabricacion = anioFabricacion;
-//        this.kilometraje = kilometraje;
         setMarca(marca);
         setAnioFabricacion(anioFabricacion);
         setKilometraje(kilometraje);
-
     }
 
     public String getMarca() {
@@ -20,15 +16,10 @@ public class Vehiculo {
     }
 
     public void setMarca(String marca) {
-        try {
-            if (marca == null || marca.trim().isEmpty()) {
-                throw new IllegalArgumentException("Marca inválida");
-            } else {
-                this.marca = marca;
-            }
-
-        } catch (IllegalArgumentException e){
-            System.out.println("Mensaje de error: " + e.getMessage());
+        if (marca == null || marca.trim().isEmpty()) {
+            throw new IllegalArgumentException("Marca inválida");
+        } else {
+            this.marca = marca;
         }
     }
 
@@ -37,15 +28,10 @@ public class Vehiculo {
     }
 
     public void setAnioFabricacion(int anioFabricacion) {
-        try {
-            if (anioFabricacion >= 1990 && anioFabricacion <= 2026) {
-                throw new IllegalArgumentException("Año de fabricación no válido");
-            } else {
-                this.anioFabricacion = anioFabricacion;
-            }
-
-        } catch (IllegalArgumentException e){
-            System.out.println("Mensaje de error: " + e.getMessage());
+        if (anioFabricacion < 1990 || anioFabricacion > 2026) {
+            throw new IllegalArgumentException("Año de fabricación no válido");
+        } else {
+            this.anioFabricacion = anioFabricacion;
         }
     }
 
@@ -54,21 +40,17 @@ public class Vehiculo {
     }
 
     public void setKilometraje(double kilometraje) {
-        try {
-            if (anioFabricacion > 0) {
-                throw new IllegalArgumentException("Kilometraje debe ser mayor que cero");
-            } else {
-                this.kilometraje = kilometraje;
-            }
-
-        } catch (IllegalArgumentException e){
-            System.out.println("Mensaje de error: " + e.getMessage());
+        if (kilometraje <= 0 || Double.isNaN(kilometraje)
+                || Double.isInfinite(kilometraje)) {
+            throw new IllegalArgumentException("Kilometraje debe ser mayor que cero y válido");
+        } else {
+            this.kilometraje = kilometraje;
         }
     }
 
     @Override
     public String toString() {
-        return "Vehiculo:" +
+        return "Vehiculo: " +
                 "marca='" + marca + '\'' +
                 ", anioFabricacion=" + anioFabricacion;
     }

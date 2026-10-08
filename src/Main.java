@@ -2,9 +2,12 @@ import taller_mecanico.Vehiculo;
 
 public class Main {
     public static void main(String[] args) {
-        Vehiculo vehiculo = new Vehiculo("", 1200, 0);
-//        La principal diferencia sería la agrupación y consolidación de lo que sería el funcionamiento de algo en la vida real
-//        POO nos permite que podamos crear un objeto con atributos y comportamientos definidos
-//        Que hace que el código quede más ordenado y entendible sobre qué es.
+        Vehiculo vehiculo = new Vehiculo("Toyota", 2020, 15000);
+        System.out.println(vehiculo);
+//      A diferencia de la programación estructurada, la POO permite
+//      agrupar datos y comportamientos dentro de una clase.
+//      Java utiliza tipos explícitos como String, int y double,
+//      lo que permite definir qué tipo de información almacena
+//      cada atributo. Esto hace que el código sea más organizado.
     }
 }
