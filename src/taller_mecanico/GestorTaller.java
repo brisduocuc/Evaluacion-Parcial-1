@@ -20,7 +20,6 @@ public class GestorTaller {
 
         List<Vehiculo> encontrados = new ArrayList<>();
 
-        // Recorro los vehículos para buscar los de la misma marca.
         for (Vehiculo vehiculo : vehiculos) {
             if (vehiculo.getMarca().equalsIgnoreCase(criterio)) {
                 encontrados.add(vehiculo);
@@ -34,11 +33,47 @@ public class GestorTaller {
 
         System.out.println("=== VEHÍCULOS REGISTRADOS ===");
 
-        // Cada vehículo calcula el costo según su tipo.
+        // El listado utiliza el formato definido en Vehiculo.
         for (Vehiculo vehiculo : vehiculos) {
             System.out.println(vehiculo);
+        }
+    }
+
+    public void mostrarDetalleVehiculos(List<Vehiculo> encontrados) {
+
+        for (Vehiculo vehiculo : encontrados) {
+
+            System.out.println("Tipo: "
+                    + vehiculo.getClass().getSimpleName());
+
+            System.out.println("Marca: " + vehiculo.getMarca());
+            System.out.println("Año: " + vehiculo.getAnioFabricacion());
+            System.out.println("Kilometraje: " + vehiculo.getKilometraje());
+
+            // Los datos específicos dependen del vehículo encontrado.
+            if (vehiculo instanceof Auto) {
+
+                Auto auto = (Auto) vehiculo;
+
+                System.out.println("Modelo: " + auto.getModelo());
+                System.out.println("Garantía fábrica: "
+                        + auto.isGarantiaFabricaVigente());
+
+                System.out.println("Garantía activa: "
+                        + auto.tieneGarantiaActiva());
+
+            } else if (vehiculo instanceof Furgon) {
+
+                Furgon furgon = (Furgon) vehiculo;
+
+                System.out.println("Capacidad: "
+                        + furgon.getCapacidadCargaToneladas()
+                        + " toneladas");
+            }
+
             System.out.println("Costo servicio: $"
                     + vehiculo.calcularCostoServicio());
+
             System.out.println();
         }
     }

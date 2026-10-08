@@ -1,6 +1,5 @@
 import taller_mecanico.Auto;
 import taller_mecanico.Furgon;
-import taller_mecanico.Garantizable;
 import taller_mecanico.GestorTaller;
 import taller_mecanico.Vehiculo;
 
@@ -14,63 +13,57 @@ public class Main {
 
             GestorTaller gestor = new GestorTaller();
 
-            Vehiculo auto1 = new Auto(
-                    "Toyota", 2020, 15000, "Yaris", true
+            // Datos oficiales para la evaluación.
+            Auto autoToyota = new Auto(
+                    "Toyota", 2022, 18000, "Yaris", true
             );
 
-            Vehiculo auto2 = new Auto(
-                    "Hyundai", 2018, 80000, "Accent", false
+            Auto autoChevrolet = new Auto(
+                    "Chevrolet", 2018, 62000, "Sail", false
             );
 
-            Vehiculo furgon1 = new Furgon(
-                    "Toyota", 2022, 40000, 2.0
+            Furgon furgonToyota = new Furgon(
+                    "Toyota", 2020, 45000, 2.0
             );
 
-            Vehiculo furgon2 = new Furgon(
-                    "Peugeot", 2021, 35000, 1.2
+            Furgon furgonHyundai = new Furgon(
+                    "Hyundai", 2023, 12000, 1.0
             );
 
-            System.out.println("=== REGISTRO ===");
+            // Activo la garantía del Toyota después de crearlo.
+            System.out.println("=== GARANTÍA TOYOTA ===");
 
-            gestor.registrarVehiculo(auto1);
-            gestor.registrarVehiculo(auto2);
-            gestor.registrarVehiculo(furgon1);
-            gestor.registrarVehiculo(furgon2);
+            System.out.println("Estado inicial: "
+                    + autoToyota.tieneGarantiaActiva());
+
+            autoToyota.activarGarantia();
+
+            System.out.println("Estado actual: "
+                    + autoToyota.tieneGarantiaActiva());
 
             System.out.println();
 
-            gestor.mostrarVehiculos();
+            System.out.println("=== REGISTRO DE VEHÍCULOS ===");
 
-            System.out.println("=== BÚSQUEDA POR MARCA ===");
+            gestor.registrarVehiculo(autoToyota);
+            gestor.registrarVehiculo(autoChevrolet);
+            gestor.registrarVehiculo(furgonToyota);
+            gestor.registrarVehiculo(furgonHyundai);
+
+            System.out.println();
+
+            System.out.println("=== BÚSQUEDA TOYOTA ===");
 
             List<Vehiculo> encontrados = gestor.buscarPorMarca("Toyota");
 
-            // Muestro las coincidencias de la búsqueda.
-            for (Vehiculo vehiculo : encontrados) {
-                System.out.println(vehiculo);
-            }
+            System.out.println("Resultados encontrados: "
+                    + encontrados.size());
 
-            System.out.println();
-            System.out.println("=== DESCUENTOS ===");
+            gestor.mostrarDetalleVehiculos(encontrados);
 
-            System.out.println("Auto con 10%: $"
-                    + auto1.calcularCostoServicio(10));
+            System.out.println("=== LISTADO FINAL ===");
 
-            System.out.println("Furgón con 20%: $"
-                    + furgon1.calcularCostoServicio(20));
-
-            System.out.println();
-            System.out.println("=== GARANTÍA ===");
-
-            Garantizable garantiaAuto = (Garantizable) auto1;
-
-            System.out.println("Garantía inicial: "
-                    + garantiaAuto.tieneGarantiaActiva());
-
-            garantiaAuto.activarGarantia();
-
-            System.out.println("Garantía final: "
-                    + garantiaAuto.tieneGarantiaActiva());
+            gestor.mostrarVehiculos();
 
         } catch (IllegalArgumentException e) {
             System.out.println("Mensaje de error: " + e.getMessage());
