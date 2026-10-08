@@ -1,9 +1,10 @@
 package taller_mecanico;
 
-public class Auto extends Vehiculo {
+public class Auto extends Vehiculo implements Garantizable {
 
     private String modelo;
     private boolean garantiaFabricaVigente;
+    private boolean garantiaActiva = false;
 
     public Auto(String marca, int anioFabricacion, double kilometraje,
                 String modelo, boolean garantiaFabricaVigente) {
@@ -19,8 +20,6 @@ public class Auto extends Vehiculo {
     }
 
     public void setModelo(String modelo) {
-        // Valido que el modelo tenga algún valor
-        // para no guardar uno vacío.
         if (modelo == null || modelo.trim().isEmpty()) {
             throw new IllegalArgumentException("Modelo inválido");
         } else {
@@ -41,11 +40,22 @@ public class Auto extends Vehiculo {
 
         double costoBase = 25000;
 
+        // Sin garantía de fábrica, el servicio aumenta un 30%.
         if (!garantiaFabricaVigente) {
             costoBase = costoBase * 1.30;
         }
 
         return costoBase;
+    }
+
+    @Override
+    public boolean tieneGarantiaActiva() {
+        return garantiaActiva;
+    }
+
+    @Override
+    public void activarGarantia() {
+        garantiaActiva = true;
     }
 
     @Override
