@@ -1,72 +1,148 @@
-import taller_mecanico.Auto;
-import taller_mecanico.Furgon;
-import taller_mecanico.GestorTaller;
-import taller_mecanico.Vehiculo;
+package taller_mecanico;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        try {
+        Scanner scanner = new Scanner(System.in);
+        LecturaEntrada entrada = new LecturaEntrada(scanner);
 
-            GestorTaller gestor = new GestorTaller();
+        GestorTaller gestor = new GestorTaller();
 
-            // Datos oficiales para la evaluación.
-            Auto autoToyota = new Auto(
-                    "Toyota", 2022, 18000, "Yaris", true
-            );
+        Auto autoToyota = new Auto(
+                "Toyota", 2022, 18000, "Yaris", true
+        );
 
-            Auto autoChevrolet = new Auto(
-                    "Chevrolet", 2018, 62000, "Sail", false
-            );
+        Auto autoChevrolet = new Auto(
+                "Chevrolet", 2018, 62000, "Sail", false
+        );
 
-            Furgon furgonToyota = new Furgon(
-                    "Toyota", 2020, 45000, 2.0
-            );
+        Furgon furgonToyota = new Furgon(
+                "Toyota", 2020, 45000, 2.0
+        );
 
-            Furgon furgonHyundai = new Furgon(
-                    "Hyundai", 2023, 12000, 1.0
-            );
+        Furgon furgonHyundai = new Furgon(
+                "Hyundai", 2023, 12000, 1.0
+        );
 
-            // Activo la garantía del Toyota después de crearlo.
-            System.out.println("=== GARANTÍA TOYOTA ===");
+        autoToyota.activarGarantia();
 
-            System.out.println("Estado inicial: "
-                    + autoToyota.tieneGarantiaActiva());
+        System.out.println("=== REGISTRO DE VEHÍCULOS ===");
 
-            autoToyota.activarGarantia();
+        gestor.registrarVehiculo(autoToyota);
+        gestor.registrarVehiculo(autoChevrolet);
+        gestor.registrarVehiculo(furgonToyota);
+        gestor.registrarVehiculo(furgonHyundai);
 
-            System.out.println("Estado actual: "
-                    + autoToyota.tieneGarantiaActiva());
+        System.out.println();
+
+        System.out.println("=== BÚSQUEDA OFICIAL TOYOTA ===");
+
+        List<Vehiculo> encontrados = gestor.buscarPorMarca("Toyota");
+
+        System.out.println("Resultados encontrados: " + encontrados.size());
+
+        gestor.mostrarDetalleVehiculos(encontrados);
+
+        System.out.println("=== LISTADO OFICIAL ===");
+        gestor.mostrarVehiculos();
+
+        int opcion = 0;
+
+        // El menú se mantiene hasta que el usuario quiera salir.
+        while (opcion != 4) {
 
             System.out.println();
+            System.out.println("===== TALLER AUTOFIX =====");
+            System.out.println("1. Listar vehículos");
+            System.out.println("2. Buscar por marca");
+            System.out.println("3. Simular costo con descuento");
+            System.out.println("4. Salir");
 
-            System.out.println("=== REGISTRO DE VEHÍCULOS ===");
+            opcion = entrada.leerEntero("Seleccione una opción: ");
 
-            gestor.registrarVehiculo(autoToyota);
-            gestor.registrarVehiculo(autoChevrolet);
-            gestor.registrarVehiculo(furgonToyota);
-            gestor.registrarVehiculo(furgonHyundai);
+            switch (opcion) {
 
-            System.out.println();
+                case 1:
 
-            System.out.println("=== BÚSQUEDA TOYOTA ===");
+                    gestor.mostrarVehiculos();
+                    break;
 
-            List<Vehiculo> encontrados = gestor.buscarPorMarca("Toyota");
+                case 2:
 
-            System.out.println("Resultados encontrados: "
-                    + encontrados.size());
+                    String marca = entrada.leerTexto(
+                            "Ingrese marca a buscar: "
+                    );
 
-            gestor.mostrarDetalleVehiculos(encontrados);
+                    List<Vehiculo> resultados = gestor.buscarPorMarca(marca);
 
-            System.out.println("=== LISTADO FINAL ===");
+                    if (resultados.isEmpty()) {
+                        System.out.println("No se encontraron vehículos.");
+                    } else {
+                        System.out.println("Vehículos encontrados: "
+                                + resultados.size());
 
-            gestor.mostrarVehiculos();
+                        gestor.mostrarDetalleVehiculos(resultados);
+                    }
 
-        } catch (IllegalArgumentException e) {
-            System.out.println("Mensaje de error: " + e.getMessage());
+                    break;
+
+                case 3:
+
+                    List<Vehiculo> vehiculos = gestor.obtenerVehiculos();
+
+                    System.out.println("=== SELECCIONAR VEHÍCULO ===");
+
+                    for (int i = 0; i < vehiculos.size(); i++) {
+                        System.out.println((i + 1) + ". " + vehiculos.get(i));
+                    }
+
+                    int numeroVehiculo;
+
+                    // Vuelvo a pedir el número si no existe en el listado.
+                    while (true) {
+
+                        numeroVehiculo = entrada.leerEntero(
+                                "Seleccione un vehículo: "
+                        );
+
+                        if (numeroVehiculo >= 1
+                                && numeroVehiculo <= vehiculos.size()) {
+                            break;
+                        }
+
+                        System.out.println("Seleccione un vehículo válido.");
+                    }
+
+                    double descuento = entrada.leerDescuento();
+
+                    Vehiculo seleccionado = vehiculos.get(numeroVehiculo - 1);
+
+                    System.out.println("Vehículo: " + seleccionado);
+
+                    System.out.println("Costo normal: $"
+                            + seleccionado.calcularCostoServicio());
+
+                    System.out.println("Costo con descuento: $"
+                            + seleccionado.calcularCostoServicio(descuento));
+
+                    break;
+
+                case 4:
+
+                    System.out.println("Saliendo del sistema AutoFix...");
+                    break;
+
+                default:
+
+                    System.out.println("Opción no válida, intente nuevamente.");
+                    break;
+            }
         }
+
+        scanner.close();
     }
 }

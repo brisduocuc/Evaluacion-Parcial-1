@@ -77,4 +77,8 @@ public class GestorTaller {
             System.out.println();
         }
     }
+
+    public List<Vehiculo> obtenerVehiculos() {
+        return new ArrayList<>(vehiculos);
+    }
 }
